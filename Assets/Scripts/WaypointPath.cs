@@ -4,7 +4,6 @@ public class WaypointPath : MonoBehaviour
 {
     public Transform[] waypoints;
 
-    // Popula automaticamente os filhos caso você esqueça de arrastar no Inspector
     private void Awake()
     {
         waypoints = new Transform[transform.childCount];
@@ -12,9 +11,18 @@ public class WaypointPath : MonoBehaviour
         {
             waypoints[i] = transform.GetChild(i);
         }
+
+        LineRenderer line = GetComponent<LineRenderer>();
+        if (line != null)
+        {
+            line.positionCount = waypoints.Length;
+            for (int i = 0; i < waypoints.Length; i++)
+            {
+                line.SetPosition(i, waypoints[i].position);
+            }
+        }
     }
 
-    // Desenha a linha do caminho na aba Scene da Unity
     private void OnDrawGizmos()
     {
         if (transform.childCount < 2) return;
