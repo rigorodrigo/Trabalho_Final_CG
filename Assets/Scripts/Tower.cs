@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Torre que detecta inimigos dentro de um raio e dispara projéteis no mais próximo
@@ -7,7 +9,15 @@ public class Tower : MonoBehaviour
     [SerializeField] private float fireInterval = 0.5f; // segundos entre ataques
     [SerializeField] private Projectile projectilePrefab;
 
+    public AudioClip pupupuSound;
+    private AudioSource towerAudio;
+
     private float cooldown;
+
+    void Start()
+    {
+        towerAudio = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -21,6 +31,7 @@ public class Tower : MonoBehaviour
         Projectile projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         projectile.Launch(target.transform.position);
         cooldown = fireInterval;
+        towerAudio.PlayOneShot(pupupuSound, 1.0f);
     }
 
     private Enemy FindClosestEnemy()
