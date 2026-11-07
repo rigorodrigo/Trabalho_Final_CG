@@ -23,7 +23,7 @@ public class WaveSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(SpawnarGrupo(ondas[0].grupos[0]));  // inicia a corrotina, com a primeira onda e seu primeiro grupo
+        StartCoroutine(ExecutarFase());
     }
 
     // Update is called once per frame
@@ -46,5 +46,26 @@ public class WaveSpawner : MonoBehaviour
             SpawnarInimigo(grupo);
             yield return new WaitForSeconds(grupo.intervalo);
         }
+    }
+
+    private IEnumerator SpawnarOnda (Wave onda)
+    {
+        yield return new WaitForSeconds(onda.pausa);
+
+        foreach (EnemyGroup grupo in onda.grupos) // para cada grupo na onda...
+        {
+            yield return StartCoroutine(SpawnarGrupo(grupo)); // spawanndo um grupo por vez
+        }
+    }
+
+    private IEnumerator ExecutarFase ()
+    {
+        for (int i = 0; i< ondas.Count; i++)
+        {
+            yield return StartCoroutine(SpawnarOnda(ondas[i]));
+            Debug.Log($"Onda número {i}");
+        }
+
+        Debug.Log("Fase Acabou.");
     }
 }

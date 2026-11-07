@@ -353,6 +353,12 @@ MonoBehaviour:
       quantidade: 5
       intervalo: 2
       caminho: {fileID: 1281312676}
+  - pausa: 3
+    grupos:
+    - prefab: {fileID: 6641257764725068180, guid: 957b139cb8605d275a7d3b07ac2afa0e, type: 3}
+      quantidade: 3
+      intervalo: 1
+      caminho: {fileID: 1281312676}
 --- !u!1001 &878820988
 PrefabInstance:
   m_ObjectHideFlags: 0
