@@ -20,10 +20,28 @@ public class WaveSpawner : MonoBehaviour
 {
 
     [SerializeField] private List<Wave> ondas;
+    [SerializeField] private int inimigosVivos;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         StartCoroutine(ExecutarFase());
+    }
+
+    private void OnEnable()
+    {
+        Enemy.Died += InimigoMorreu;
+        Enemy.ReachedBase += InimigoMorreu;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.Died -= InimigoMorreu;
+        Enemy.ReachedBase -= InimigoMorreu;
+    }
+
+    private void InimigoMorreu(Enemy inimigo)
+    {
+        inimigosVivos --;
     }
 
     // Update is called once per frame
@@ -37,6 +55,7 @@ public class WaveSpawner : MonoBehaviour
         Vector3 posicao = grupo.caminho.waypoints[0].position;
         Enemy novoInimigo = Instantiate(grupo.prefab,posicao, Quaternion.identity); // instancionado o prefab em rotação neutra e na primeira posição
         novoInimigo.path = grupo.caminho;
+        inimigosVivos++;
     }
 
     private IEnumerator SpawnarGrupo (EnemyGroup grupo)
@@ -56,6 +75,7 @@ public class WaveSpawner : MonoBehaviour
         {
             yield return StartCoroutine(SpawnarGrupo(grupo)); // spawanndo um grupo por vez
         }
+        yield return new WaitUntil(() => inimigosVivos == 0);  // testando a verificação se não há mais inimigos vivos
     }
 
     private IEnumerator ExecutarFase ()
