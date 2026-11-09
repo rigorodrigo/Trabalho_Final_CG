@@ -25,7 +25,8 @@ public class LojaDeTorres : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Alpha1)) Selecionar(0);
+        if(Input.GetKeyDown(KeyCode.Alpha2)) Selecionar(1);
     }
 
     public Tower Comprar(Vector3 posicao)
@@ -41,5 +42,10 @@ public class LojaDeTorres : MonoBehaviour
         return Instantiate(opcao.prefab, posicao, Quaternion.identity);
     }
 
+    public void Selecionar (int indice)
+    {
+        selecionada = indice;
+        Debug.Log($"Selecionou a torre: {opcoes[indice].nome}");
+    }
 
 }
